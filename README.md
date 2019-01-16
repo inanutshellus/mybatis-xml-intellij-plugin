@@ -9,20 +9,20 @@ Right-click inside a MyBATIS/iBATIS XML file's query tag (e.g. inside a "select"
 <tt>SqlExample.xml:</tt>
 
 ```xml
-    [...] &lt;sql id="sometable"&gt;${prefix}Table&lt;/sql&gt;
+    [...] <sql id="sometable">${prefix}Table</sql>
 
-    &lt;sql id="someinclude"&gt;
-        from &lt;include refid="${include_target}"/&gt;
-    &lt;/sql&gt;
+    <sql id="someinclude">
+        from <include refid="${include_target}"/>
+    </sql>
 
-    &lt;select id="selectWithIncludeProperties" resultType="map"&gt;
+    <select id="selectWithIncludeProperties" resultType="map">
         select
         field1, field2, field3
-        &lt;include refid="someinclude"&gt;
-            &lt;property name="prefix" value="Some"/&gt;
-            &lt;property name="include_target" value="sometable"/&gt;
-        &lt;/include&gt;
-    &lt;/select&gt; [...]
+        <include refid="someinclude">
+            <property name="prefix" value="Some"/>
+            <property name="include_target" value="sometable"/>
+        </include>
+    </select> [...]
 ```
 
 Output if you right-click within the "select" tag:
@@ -43,15 +43,15 @@ Perfect for pasting into your favorite SQL IDE. Give or take. Anything it can't 
 
     from SomeTable
     where
-    /*&lt;foreach item="myItem" collection="myItems" open="(" close=")" separator=","&gt;
+    /*<foreach item="myItem" collection="myItems" open="(" close=")" separator=",">
             #{myItem.someAttribute}
-        &lt;/foreach&gt;
+        </foreach>
     */
 ```
 
 This version is limited in functionality but is still very useful if you don't mind said limitations:
 
 * Assumes you use iBATIS or MyBATIS XML file configuration
-* Assumes the "&lt;sql&gt;" fragments are in the same file
+* Assumes the "<sql>" fragments are in the same file
 
 [right-click-example-img]: https://github.com/inanutshellus/mybatis-xml-intellij-plugin/blob/master/mybatis-xml-intellij-plugin-right-click-example.png
