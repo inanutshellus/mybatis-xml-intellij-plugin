@@ -1,0 +1,78 @@
+<idea-plugin>
+  <id>net.pseudocode</id>
+  <name>MyBATIS SQL Extractor</name>
+  <version>1.0</version>
+  <vendor email="intellij-plugin@pseudocode.net">Pseudocode.net</vendor>
+
+  <description><![CDATA[
+      <h1>Extract the SQL from MyBATIS XML files to clipboard.</h1>
+      
+      <p>Right-click inside a MyBATIS/iBATIS XML file's query tag (e.g. inside a "select") and
+      click the "Extract Query to Clipboard" context menu item. The plugin will turn your mybatis statement into a real sql query.</p>
+
+      <p>For example:</p>
+
+<p>SqlExample.xml:</p>
+
+<pre>
+    [...] &lt;sql id="sometable"&gt;${prefix}Table&lt;/sql&gt;
+
+    &lt;sql id="someinclude"&gt;
+        from &lt;include refid="${include_target}"/&gt;
+    &lt;/sql&gt;
+
+    &lt;select id="selectWithIncludeProperties" resultType="map"&gt;
+        select
+        field1, field2, field3
+        &lt;include refid="someinclude"&gt;
+            &lt;property name="prefix" value="Some"/&gt;
+            &lt;property name="include_target" value="sometable"/&gt;
+        &lt;/include&gt;
+    &lt;/select&gt; [...]
+</pre>
+
+<p>Output if you right-click within the "select" tag:</p>
+
+<pre>
+    select
+    field1, field2, field3
+
+    from SomeTable
+</pre>
+
+<p>It's not the prettiest always, but it's better than manually constructing a sql statement full of fragments!</p>
+      
+      
+      
+    ]]></description>
+
+  <change-notes><![CDATA[
+  This version has some limitations/assumptions:
+  <ul>
+      <li>Assumes you use iBATIS or MyBATIS XML file configuration</li>
+      <li>Assumes the "&lt;sql&gt;" fragments are in the same file</li>
+  </ul>
+  ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="162.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+    <action id="SimpleAction" class="SimpleAction" text="Extract Query to Clipboard">
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+    </action>
+  </actions>
+
+</idea-plugin>

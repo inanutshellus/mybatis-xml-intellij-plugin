@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="Example">
+    <resultMap id="someResultMap" type="Foo">
+        <id property="someId" column="someId"/>
+        <result property="someProperty" column="someProperty"/
+        <association property="someAssociation" javaType="SomeType" notNullColumn="blahBlahBlah">
+            <result column="grossRevenueInCents" property="grossRevenueInCents"/>
+        </association>
+        <collection property="stuffityStuff" notNullColumn="stuffityId" resultMap="Example.SomeSubMap"/>
+        <collection property="anotherCollection" notNullColumn="anotherId" javaType="AnotherType">
+            <id property="collectionId" column="collectionId"/>
+            <result property="collectionProperty" column="collectionProperty"/>
+        </collection>
+    </resultMap>
+    
+    <resultMap id="SomeSubMap" type="SomeSubType">
+        <id property="someSubId" column="someSubId" />
+    </resultMap>
+    
+    <sql id="SelectFragment">select foo</sql>
+
+    <sql id="FromFragmentWithNestedSimpleFragment">from bar
+        <include refid="JoinFragment"/></sql>
+
+    <sql id="JoinFragment">join baaz on bar.id = baaz.bar_id</sql>
+
+    <sql id="JoinFragmentWithLogicTags">
+        join bux on bar.id = bux.bar_id
+        <dynamic>
+            <ifNull test="something">stuff</ifNull>
+        </dynamic>
+    </sql>
+
+    <sql id="compositeFragment">
+        <include refid="SelectFragment"/>
+        <include refid="FromFragmentWithNestedSimpleFragment"/>
+        <include refid="JoinFragmentWithLogicTags"/>
+    </sql>
+
+    <select id="basicSelect" resultMap="someResultMap">
+        <include refid="compositeFragment"/>
+        where bux.code = 'STUFF'
+    </select>
+
+    <insert id="basicInsert">
+        insert into somewhere (stuff) values ('stuffity stuff')
+    </insert>
+
+    <update id="basicUpdate">
+        update somewhere set stuff=#{stuffityStuff} where 1=2
+    </update>
+
+    <select id="selectWithCDATA" resultMap="someResultMap">
+        select stuff from somewhere
+        where start_date <![CDATA[ < ]]> #{endDate}
+        and end_date > #{startDate}
+    </select>
+
+    <select id="selectWithXMLComment" resultMap="someResultMap">
+        select stuff from somewhere
+        <!-- Yay an xml comment -->
+        where stuff = other_stuff
+    </select>
+
+    <sql id="sometable">
+        ${prefix}Table
+    </sql>
+
+    <sql id="someinclude">
+        from
+        <include refid="${include_target}"/>
+    </sql>
+
+    <select id="selectWithIncludeProperties" resultType="map">
+        select
+        field1, field2, field3
+        <include refid="someinclude">
+            <property name="prefix" value="Some"/>
+            <property name="include_target" value="sometable"/>
+        </include>
+    </select>
+
+    <select id="selectWithLogicTags" resultMap="someResultMap">
+        select
+        field1, field2, field3
+        from sometable
+        where id in
+        <foreach item="someId" collection="list" open="(" close=")" separator=",">
+            #{someId}
+        </foreach>
+
+        <if test="someField != null">
+            and somefield = 'Foo'
+        </if>
+        order by field1
+    </select>    
+    
+    <select id="selectWithVariables" resultMap="someResultMap">
+        select
+        field1, field2, field3
+        from sometable
+        where id = #{someId}
+        order by field1
+    </select>    
+    
+    <insert id="callableInsert" statementType="CALLABLE">
+        declare
+            v_show_id shows.show_id%type;
+            v_start_date shows.start_date%type;
+            v_end_date shows.end_date%type;
+            v_show_type shows.showtype%type;
+            v_title shows.desctv%type;
+            v_taped_show shows.is_taped_show%type;
+        begin
+        
+            v_start_date := #{show.startDate, mode=IN};
+            v_end_date := #{show.endDate, mode=IN};
+            v_title := #{show.title, mode=IN};
+            v_taped_show := #{show.taped, mode=IN, typeHandler=com.mybatis.foo.bar.baz.YesNoTypeHandler};
+        
+            insert into shows
+            (start_date, end_date, title, is_taped_show)
+            values
+            (v_start_date, v_end_date, v_title, v_taped_show)
+            returning show_id into v_show_id;        
+        
+            #{show.showId, mode=OUT, javaType=Integer, jdbcType=NUMERIC} := v_show_id; 
+        end;
+    </insert>
+    
+    <delete id="simpleDelete">
+        delete from somewhere where field1='true'
+    </delete>
+
+    <select id="nullTagTest"/>
+</mapper>
