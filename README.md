@@ -54,4 +54,4 @@ This version is limited in functionality but is still very useful if you don't m
 * Assumes you use iBATIS or MyBATIS XML file configuration
 * Assumes the "&lt;sql&gt;" fragments are in the same file
 
-[right-click-example-img]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 2"
+[right-click-example-img]: https://github.com/inanutshellus/mybatis-xml-intellij-plugin/blob/master/mybatis-xml-intellij-plugin-right-click-example.png
