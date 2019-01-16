@@ -2,6 +2,8 @@
       
 Right-click inside a MyBATIS/iBATIS XML file's query tag (e.g. inside a "select") and click the "Extract Query to Clipboard" context menu item. The plugin will turn your mybatis statement into a real sql query (or, well, its best attempt) and load it into your clipboard.
 
+![Right click in the tag you want extracted and select "Extract Query to Clipboard"][right-click-example-img]
+
 ## For example:
 
 <tt>SqlExample.xml:</tt>
@@ -52,3 +54,4 @@ This version is limited in functionality but is still very useful if you don't m
 * Assumes you use iBATIS or MyBATIS XML file configuration
 * Assumes the "&lt;sql&gt;" fragments are in the same file
 
+[right-click-example-img]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 2"
