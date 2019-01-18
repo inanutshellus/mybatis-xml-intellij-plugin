@@ -47,21 +47,6 @@ public class SimpleAction extends AnAction {
     }
 
     private void sendExtractedSql(String sqlName, String sql) {
-        // GGC TODO - Consider prepending the SQL name to the clipboard data, e.g. "/*" + sqlName + "*/\n" +  sql... might be cool (or annoying) so if you make a config dialog, there's a config option :)
-        // GGC TODO - Config option - Might want to see where the fragment starts/ends too...
-        // GGC TODO - smart formatting... e.g. preserve existing formatting, but when injecting sql from a fragment fix its indentation to match the calling sql's indentation
-
-        // GGC TODO - Scratch file
-        // Below we send the SQL to clipboard and tell the user about it, but maybe sending it to a scratch file would be better?
-        // Seems like it ought to be pretty simple. Scratch files are stored in the intellij home folder,
-        // (e.g. on MacOS it's at "~/Library/Preferences/Idea2017.3/scratches/scratch.sql")
-        // so just need an environment variable telling me where that is.
-        // Found this project that talks about scratches but haven't looked at the code yet. maybe it'll tell me.
-        // https://github.com/svozniuk/scratch/blob/proper-rewrite/src/scratch/MrScratchManager.java
-
-//        System.out.println("Extracted the following SQL:");
-//        System.out.println(sql);
-
         CopyPasteManager.getInstance().setContents(new TextTransferable(sql));
 
         clipboardNotification.setContent("SQL for `" + sqlName + "` copied to clipboard");
